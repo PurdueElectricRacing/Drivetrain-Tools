@@ -124,11 +124,11 @@ Cp = 2300; %Steel to steel [psi^(1/2)]
 %AGMA Strength Equations (Assume material same for sun and planet rn)
 %Uncomment either grade 1 or grade 2 equations
 %Grade 1
-%St = 77.3*Hb + 12800; %Allowable bending stress number [psi]
-%Sc = 322*Hb + 29000; %Allowable contact stress number [psi]
+St = 77.3*Hb + 12800; %Allowable bending stress number [psi]
+Sc = 322*Hb + 29000; %Allowable contact stress number [psi]
 %Grade 2
-St = 102*Hb + 16400; %Allowable bending stress number [psi]
-Sc = 349*Hb + 34300; %Allowable contact stress number [psi]
+%St = 102*Hb + 16400; %Allowable bending stress number [psi]
+%Sc = 349*Hb + 34300; %Allowable contact stress number [psi]
 
 %Hardness Ratio Factor
 Ch = 1;
