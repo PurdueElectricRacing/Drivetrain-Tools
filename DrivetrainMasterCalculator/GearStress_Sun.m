@@ -37,7 +37,7 @@ qV = 12; %quality
 % v_p %poisson's ratio for planet
 % E_s %Young's modulus of sun
 % E_p %Young's modulus of planet
-Hb = 330; %Brinell Hardness guess
+Hb = 550; %Brinell Hardness guess
 
 %%INDIVIDUAL VARIABLES NEEDED AFTER THIS POINT
 %% STRESS COEFFICIENT CALCULATIONS
