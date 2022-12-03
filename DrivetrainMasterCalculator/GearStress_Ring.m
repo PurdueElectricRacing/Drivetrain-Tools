@@ -1,4 +1,4 @@
-function [sF_s, sH_s] = GearStress(pd, planet_n, ring_n, J_s, t_div, end_runs)
+function [sF_s, sH_s] = GearStress_Ring(pd, planet_n, ring_n, J_s, t_div, end_runs)
 %% NOTE
 %INPUTS:
 %pd = diametral pitch (don't confuse this as pitch diameter. Following
