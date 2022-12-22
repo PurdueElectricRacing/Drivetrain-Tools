@@ -1,4 +1,4 @@
-function [sF_s, sH_s] = GearStress_Sun(pd, sun_n, planet_n, J_s, t_div, end_runs)
+function [sF_s, sH_s] = GearStress_Sun(pd, sun_n, planet_n, J_s,Q, sun_facewidth,hardness,t_div, end_runs)
 %% NOTE
 %INPUTS:
 %pd = diametral pitch (don't confuse this as pitch diameter. Following
@@ -15,7 +15,7 @@ function [sF_s, sH_s] = GearStress_Sun(pd, sun_n, planet_n, J_s, t_div, end_runs
 %% USER-DEFINED CONSTANTS
 %Track and Vehicle Variables
 end_time = 25; %length of endurance in minutes
-Ne = end_runs;%Number of endurance events ran
+Ne = end_runs;%Number of en durance events ran
 
 motor_rpm = 7017; %[rpm]
 torque = (47.88319/2)./t_div;%value of average torque retrieved from OptimumLapSim
@@ -24,7 +24,7 @@ hp = torque*motor_rpm/9.5488/1000*1.34; %[hp]
 %Gear Variables
 pitchDiameter = sun_n./pd; %pitch diameter sun [in]
 pressureAngle = 20; %Pressure angle [deg]
-facewidth = 0.59055118; %face width of sun [in]
+facewidth = sun_facewidth*1000/25.4; %face width of sun [in]
 F_p = 0.59055118; %face width of planet [in]
 
 %Y_tab = xlsread('Lewis_Factor.xlsx'); %Lewis Form Factor Table
@@ -32,12 +32,12 @@ N_s = motor_rpm * end_time * Ne * 3; %load cycle for sun gear
 N_p = motor_rpm / (planet_n/sun_n) * end_time * Ne; %load cycle for planet gear
 
 %Material/Manufacturing Properties
-qV = 12; %quality 
+qV = Q; %quality 
 % v_s %poisson's ratio for sun
 % v_p %poisson's ratio for planet
 % E_s %Young's modulus of sun
 % E_p %Young's modulus of planet
-Hb = 550; %Brinell Hardness guess
+Hb = hardness; %Brinell Hardness guess
 
 %%INDIVIDUAL VARIABLES NEEDED AFTER THIS POINT
 %% STRESS COEFFICIENT CALCULATIONS
@@ -53,11 +53,11 @@ Kv = ((A + sqrt(V))/A)^B;
 teeth = [sun_n planet_n];
 Y = [.328 .39];
 
-Ks_s = 1.192*(facewidth*sqrt(Y(1))/pd)^0.0535;
+Ks_s = 1.192*(facewidth*sqrt(J_s)/pd)^0.0535;
 Ks_p = 1.192*(F_p*sqrt(Y(2))/pd)^0.0535;
 
 %Load Distribution Factor
-Cmc = 1; %assume uncrowned (.8 if crowned)
+Cmc = 0.8; %assume uncrowned (.8 if crowned)
 if facewidth <= 1
     Cpf = facewidth/10/pitchDiameter-.025;
 else
