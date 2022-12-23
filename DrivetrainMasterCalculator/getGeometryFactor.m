@@ -1,3 +1,29 @@
-function[J] = getGeometryFactor(N)
-    J = -0.1112*(log(N)).^2+0.5533*(log(N))-0.2126;
+function[J_gear,J_pinion] = getGeometryFactor(gear,pinion)
+    %{
+    Y =0.1008*log(gear.teethNum)+0.0143;
+
+    t = gear.module*pi/2;
+    r = (gear.deddendum -  0.38 * gear.module)^2 / ...
+          (gear.pitchDiameter/2 + gear.deddendum - 0.38 * gear.module);
+    H = 0.331 - 0.436 * gear.pressureAngle*pi/180;
+    L = 0.324 - 0.492 * gear.pressureAngle*pi/180;
+    M = 0.261 + 0.545 * gear.pressureAngle*pi/180;
+    Kf = H + ((t/r)^L)*((t/L)^M);
+    J = Y/Kf;
+    %}
+    teeth_sample = [21 26 35 55 135];
+    J_pinion_sample = [[0.24 0 0 0 0];...
+                                        [0.24 .25 0 0 0];...
+                                        [0.24 .25 .26 0 0];...
+                                        [0.24 .25 .26 .28 0];...
+                                        [0.24 .25 .26 .28 .29]];
+    J_gear_sample =  [[0.24 0 0 0 0];...
+                                        [0.25 .25 0 0 0];...
+                                        [0.26 .26 .26 0 0];...
+                                        [0.28 .28 .28 .28 0];...
+                                        [0.29 .29 .29 .29 .29]];
+    J_pinion = interp2(teeth_sample,teeth_sample,J_pinion_sample,pinion.teethNum,gear.teethNum,'makima');
+    %J_pinion = interp1(teeth_sample,J_pinion_sample(end,:),pinion.teethNum,"makima");
+    J_gear = interp2(teeth_sample,teeth_sample,J_gear_sample,pinion.teethNum,gear.teethNum,'makima');
+   % J_gear = interp1(teeth_sample,J_pinion_sample(end,:),gear.teethNum,"makima");
 end
