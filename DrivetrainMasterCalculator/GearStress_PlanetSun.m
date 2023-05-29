@@ -67,6 +67,7 @@ Kb=1; %assume thick enough rim
 Ko = 2;
 
 %Bending Stress Cycle Factor
+%{
 if N_s < 10^7
     Yn_s = 3.517*N_s^(-0.0817);
 else
@@ -78,8 +79,11 @@ if N_p < 10^7
 else
     Yn_p = 1.3558.*N_p.^(-0.0178);
 end
-
+%}
+Yn_s = 1;
+Yn_p = 1;
 %Stress-cycle Factor Equations
+%{
 if N_s < 10^7
     Zn_s = 1.249.*N_s.^(-0.0138);
 else
@@ -91,7 +95,9 @@ if N_p < 10^7
 else
     Zn_p = 1.4488.*N_p.^(-0.023);
 end
-
+%}
+Zn_s =1;
+Zn_p =1;
 %Reliability Factor
 Kr = 1; %.99 Reliability
 
@@ -121,8 +127,8 @@ Ze = 190;
 %AGMA Strength Equations (Assume material same for sun and planet rn)
 %Uncomment either grade 1 or grade 2 equations
 %Grade 1
-St = 0.533*trial_planet.hardness + 88.3; %Allowable bending stress number [psi]
-Sc = 2.22*trial_planet.hardness+ 200; %Allowable contact stress number [psi]
+St = 0.533*trial_planet.hardness + 88.3; %Allowable bending stress number [MPa]
+Sc = 2.22*trial_planet.hardness+ 200; %Allowable contact stress number [MPa]
 %Grade 2
 %St = 0.703*Hb + 113; %Allowable bending stress number [psi]
 %Sc =2.41*trial_sun.hardness + 237; %Allowable contact stress number [psi]

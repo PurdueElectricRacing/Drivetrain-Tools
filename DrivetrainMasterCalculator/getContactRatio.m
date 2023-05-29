@@ -1,18 +1,15 @@
-function[mp] = getContactRatio(module,pressureAngle,gear,pinion,cdist)
-    dog = 2 * sqrt((cdist*sind(pressureAngle))^2+(gear.pitchDiameter/2*cosd(pressureAngle))^2);
-    dop = 2 * sqrt((cdist*sind(pressureAngle))^2+(pinion.pitchDiameter/2*cosd(pressureAngle))^2);
-
-    rog = dog/2;
-    rop = dop/2;
+function[contact_ratio] = getContactRatio(module,pressureAngle,pinionTeeths,gearTeeths)
+    addendum_radii_pinion = module + module.*pinionTeeths/2;
+    base_radii_pinion = cosd(pressureAngle) * module.*pinionTeeths/2;
+    lpinion = sqrt(addendum_radii_pinion.^2-base_radii_pinion.^2);
     
-    base_pitch = pi*module*cosd(pressureAngle);
-
-    mp = (sqrt(rop^2-(pinion.pitchDiameter/2*cosd(pressureAngle))) + sqrt(rog^2-(gear.pitchDiameter/2*cosd(pressureAngle))) - cdist * sind(pressureAngle))/base_pitch;
-
-    c5 = (rop^2-(pinion.pitchDiameter/2*cosd(pressureAngle))^2)^0.5;
-    c6 = cdist * sind(pressureAngle);
-    c1 = c6 - (rog^2 - (pinion.pitchDiameter/2*cosd(pressureAngle)))^0.5;
-    z = c5- c1;
-    mp = z/base_pitch;
+    addendum_radii_gear = module + module.* gearTeeths/2;
+    base_radii_gear = cosd(pressureAngle) * module.*gearTeeths/2;
+    lgear = sqrt(addendum_radii_gear.^2-base_radii_gear.^2);
+    
+    cdist = module.*(pinionTeeths+gearTeeths)/2;
+    
+    base_pitch = pi*module;
+    contact_ratio = (lpinion+lgear-sind(pressureAngle)*cdist)./base_pitch;
 
 end
